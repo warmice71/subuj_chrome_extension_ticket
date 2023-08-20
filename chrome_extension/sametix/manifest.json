@@ -1,0 +1,61 @@
+{
+"update_url": "https://clients2.google.com/service/update2/crx",
+
+  "name": "SameTix | Find Cheap Event Tickets",
+  "version": "0.4.2",
+  "manifest_version": 3,
+  "description": "Find cheaper tickets for concerts, sports events, comedy, theater and more.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "service_worker": "src/bg/background.js"
+  },
+  "action": {
+    "default_icon": "icons/icon48.png",
+    "default_title": "SameTix - There’s a better price for this show!"
+  },
+  "permissions": [
+    "storage",
+    "unlimitedStorage"
+  ],
+  "host_permissions": [
+    "*://*.ticketmaster.com/*",
+    "*://*.ticketmaster.ca/*",
+    "*://*.livenation.com/*",
+    "*://*.livenation.ca/*",
+    "*://*.stubhub.com/*",
+    "*://*.tickpick.com/*",
+    "*://*.sametix.com/*",
+    "*://*.amplitude.com/*"
+    ,"*://localhost/*"
+  ],
+  "web_accessible_resources": [{
+    "resources": ["/src/inject/xhr.js",
+                  "/icons/*.png"],
+    "matches":   ["*://*.ticketmaster.com/*",
+                  "*://*.ticketmaster.ca/*",
+                  "*://*.livenation.com/*",
+                  "*://*.livenation.ca/*",
+                  "*://*.stubhub.com/*",
+                  "*://*.tickpick.com/*"]
+  }],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.livenation.com/*",
+        "*://*.livenation.ca/*",
+        "*://*.ticketmaster.com/*",
+        "*://*.ticketmaster.ca/*",
+        "https://*.stubhub.com/*",
+        "https://*.tickpick.com/*"
+      ],
+      "js": [
+        "src/inject/inject.js"
+      ],
+      "run_at":    "document_start"
+    }
+  ]
+}

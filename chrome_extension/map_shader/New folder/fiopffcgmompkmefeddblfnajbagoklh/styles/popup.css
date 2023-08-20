@@ -1,0 +1,39 @@
+body {
+    width: 300px;
+    /* height: 260px; */
+    margin: 0;
+}
+
+#ticket-shader-app {
+    text-align: center;
+}
+
+.ticket-shader-header {
+    background-color: #ff9a04;
+}
+
+.ticket-shader-login-form {
+    display: grid;
+    grid-template-rows: 30px 30px 30px;
+    width: 60%;
+    margin-left: 20%;
+    grid-row-gap: 5px;
+}
+
+.success-status {
+    color: green
+}
+
+.error-status {
+    color: red
+}
+
+.logout-container {
+    width: 60%;
+    margin-left: 20%;
+    height: 30px;
+}
+
+.logout-container button {
+    width: 100%;
+}

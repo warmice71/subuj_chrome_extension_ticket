@@ -1,0 +1,160 @@
+<!doctype html>
+<html ng-app="myApp" ng-controller="myCtrl">
+
+<head>
+    <title>Settings</title>
+    <meta charset="utf-8">
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap4.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script type="text/javascript" src="/assets/angular.min.js"></script>
+    <script type="text/javascript" src="/assets/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/assets/datatable.min.js"></script>
+    <script type="text/javascript" src="/assets/settings/settings.js"></script>
+    <link rel="stylesheet" href="/assets/settings/settings.css">
+</head>
+
+<body>
+    <div class="header">
+        <div class="title">
+            <img src="/assets/logo_white.png" alt="" style="height: 40px;">
+        </div>
+    </div>
+    <div class="main">
+        <div class="side-bar">
+            <div class="item" ng-class="{true: 'selected'}[page == 'dropchecker']" ng-click="pageChange('dropchecker')">
+                <i class="fa-solid fa-gear"></i><span class="pl-3">TM Dropchecker</span>
+            </div>
+            <div class="item" ng-class="{true: 'selected'}[page == 'about_us']" ng-click="pageChange('about_us')">
+                <i class="fa-solid fa-user"></i><span class="pl-3">About Us</span>
+            </div>
+        </div>
+        <div class="main-container">
+            <div id="dropchecker-page" ng-if="page == 'dropchecker'">
+                <div class="page-header">
+                    <h4>Ticketmaster Dropchecker</h3>
+                </div>
+                <div class="page-body" ng-if="permission.dropchecker == true">
+                    <div class="mt-2">
+                        <button class="btn btn-primary" ng-click="openModal()">Add New Event</button>
+                    </div>
+                    <div class="mt-2">
+                        <table id="events-table" class="table table-bordered" style="width: 100%;">
+                            <thead>
+                                <th>EventID</th>
+                                <th>Name</th>
+                                <th>Date</th>
+                                <th>Venue</th>
+                                <th>Note</th>
+                                <th>Action</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in events">
+                                    <td>{{item.eventID}}</td>
+                                    <td><a href="{{item.url}}" target="_blank">{{item.eventName}}</a></td>
+                                    <td>{{item.eventDate}}</td>
+                                    <td>{{item.venue}}</td>
+                                    <td>{{item.note}}</td>
+                                    <td style="width: 125px;"><button class="btn btn-secondary"
+                                            ng-click="edit(item.eventID, item.filterOptions)">Edit</button>
+                                        <button class="btn btn-danger" ng-click="deleteEvent(item.eventID)"><i
+                                                class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="aboutus-page" ng-if="page == 'about_us'">
+                <div class="page-header">
+                    <div class="mt-3">
+                        <h6>Privacy Policy:</h6>
+                        <a class="w-100" href="https://eagleanalytix.com/#/faqs/privacy-policy-extension"
+                            target="_blank">https://eagleanalytix.com/#/faqs/privacy-policy-extension</a>
+                    </div>
+                    <div class="mt-3">
+                        <h6>We can get tickets information from below websites for now(continuously updating):</h6>
+                        <div>
+                            stubhub.com, ticketmaster.com, ticketmaster.co.uk, ticketmaster.ie, axs.com, seatgeek.com,
+                            vividseats.com, tickpick.com, evenue.net, mlb.com, ticketnetwork.com, telecharge.com,
+                            viagogo.com, criterion.com, hollywood.com, ticketera.com, eventbrite.com,
+                            www.carnegiehall.org, kingstheatre.com, tickets.seattlethunderbirds.com,
+                            smartfinancialcentre.net, ticketomaha.com, tickets.gostanford.com
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- add new modal -->
+    <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="statusModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content redial-border-light">
+                <div class="modal-header redial-border-light">
+                    <h5 class="modal-title pt-2" id="exampleModalLabel">{{(s_eventID) ? 'Edit Event' :
+                        'Add New Dropchecker Event'}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="eventID">EventID*:</label>
+                            <input id="eventID" type="text" class="form-control" placeholder="ticketmaster eventID"
+                                ng-model="item.eventID">
+                        </div>
+                        <div class="form-group">
+                            <label for="sections">Section(s):</label>
+                            <input id="sections" type="text" class="form-control" placeholder="Sections"
+                                ng-model="item.sections">
+                            <p><i>Input multiple sections with comma(,). (ex, 101,102,201)</i></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="places">Prices(s):</label>
+                            <input id="places" type="text" class="form-control" placeholder="Prices"
+                                ng-model="item.prices">
+                            <p><i>Input multiple prices with comma(,). (ex, 125,140)</i></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="place_less">Price Less Than:</label>
+                            <input id="place_less" type="number" class="form-control" placeholder="Price"
+                                ng-model="item.price_less">
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Quantity(Greater than):</label>
+                            <input id="quantity" type="number" step="1" min="1" max="8" class="form-control"
+                                placeholder="Quantity" ng-model="item.qty">
+                        </div>
+                        <div class="form-group">
+                            <label for="note">Note:</label>
+                            <input type="text" id="note" name="note" class="form-control" placeholder="Note"
+                                ng-model="item.note">
+                        </div>
+                        <div class="form-group">
+                            <label for="note">Email:</label>
+                            <input type="text" id="email" class="form-control" name="email" placeholder="Email"
+                                ng-model="dropcheckerEmail">
+                        </div>
+                        <div class="form-group" ng-if="input_error">
+                            <p class="text-danger">Invalid Input</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer redial-border-light">
+                    <button type="button" class="btn btn-primary" ng-click="addNewEvent()">{{(s_eventID) ? 'Update' :
+                        'Add'}}</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

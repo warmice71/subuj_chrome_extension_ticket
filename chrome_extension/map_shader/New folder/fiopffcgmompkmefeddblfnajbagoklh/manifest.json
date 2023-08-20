@@ -1,0 +1,32 @@
+{
+    "update_url": "https://clients2.google.com/service/update2/crx",
+    "description": "Shade seats according to tickets availability in ticket platforms",
+    "version": "2.0.7.3",
+    "manifest_version": 3,
+    "name": "Map Shader",
+    "background": {
+        "service_worker": "background.bundle.js"
+    },
+    "action": {
+        "default_icon": "icons/ticket-icon-34-gray.png",
+        "default_title": "aclipp Extension",
+        "default_popup": "popup.html"
+    },
+    "icons": {
+        "128": "icons/ticket-icon-128.png"
+    },
+    "content_scripts": [{
+        "matches": ["https://www.ticketmaster.com/*", "https://concerts.livenation.com/*", "https://www.ticketmaster.ca/*", "https://concerts.livenation.ca/*", "https://www.ticketmaster.com.mx/*", "https://concerts.livenation.com.mx/*"],
+        "js": ["contentScript.bundle.js"],
+        "css": ["styles/content.css"],
+        "run_at": "document_end"
+    }],
+    "permissions": ["tabs", "activeTab", "storage", "alarms"],
+    "web_accessible_resources": [{
+        "resources": ["injectionScript.bundle.js", "styles/*", "icons/*"],
+        "matches": ["<all_urls>"]
+    }],
+    "externally_connectable": {
+        "matches": ["https://www.ticketmaster.com/*", "https://concerts.livenation.com/*", "https://www.ticketmaster.ca/*", "https://concerts.livenation.ca/*", "https://www.ticketmaster.com.mx/*", "https://concerts.livenation.com.mx/*"]
+    }
+}

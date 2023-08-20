@@ -1,0 +1,105 @@
+{
+"update_url": "https://clients2.google.com/service/update2/crx",
+
+  "name": "Eagleanalytix Ticket Data Extension",
+  "version": "3.5.25",
+  "description": "Show seats and historial data for any ticketmaster, livenation, stubhub, vividseats, mlb, axs...",
+  "manifest_version": 3,
+  "icons": {
+    "128": "assets/icon-48x48.png",
+    "16": "assets/icon-48x48.png",
+    "32": "assets/icon-48x48.png",
+    "48": "assets/icon-48x48.png"
+  },
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "contextMenus"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_icon": "assets/icon-48x48.png",
+    "default_popup": "index.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.stubhub.com/*"
+      ],
+      "run_at": "document_start",
+      "js": [
+        "assets/code_stubhub.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.ticketmaster.com/*",
+        "https://concerts.livenation.com/*",
+        "https://www.ticketmaster.ca/*",
+        "https://concerts.livenation.ca/*"
+      ],
+      "run_at": "document_start",
+      "js": [
+        "assets/code_ticketmaster.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.vividseats.com/*"
+      ],
+      "run_at": "document_start",
+      "js": [
+        "assets/code_vividseats.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://tm.amosa.app/*"
+      ],
+      "run_at": "document_start",
+      "js": [
+        "assets/code_amosa.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://verified-ticket.com/*",
+        "https://verified-tickets.com/*"
+      ],
+      "run_at": "document_start",
+      "js": [
+        "assets/code_verified_ticket.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://downloadmyseats.com/*"
+      ],
+      "run_at": "document_start",
+      "js": [
+        "assets/code_downloadmyseats.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://secure.tickets/*"
+      ],
+      "run_at": "document_start",
+      "js": [
+        "assets/secure_tickets.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://tix.axs.com/*"
+      ],
+      "run_at": "document_start",
+      "js": [
+        "assets/code_axs.js"
+      ]
+    }
+  ]
+}
